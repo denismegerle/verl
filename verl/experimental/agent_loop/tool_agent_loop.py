@@ -151,7 +151,12 @@ class ToolAgentLoop(AgentLoopBase):
             interaction_kwargs = kwargs["extra_info"].get("interaction_kwargs", None) or {}
             interaction_name = interaction_kwargs.get("name", None)
 
-            if interaction_name and interaction_name in self.interaction_map:
+            if interaction_name:
+                if interaction_name not in self.interaction_map:
+                    raise ValueError(
+                        f"Interaction '{interaction_name}' not found in interaction_map. Available interactions: "
+                        f"{list(self.interaction_map.keys())}"
+                    )
                 interaction = self.interaction_map[interaction_name]
                 await interaction.start_interaction(request_id, **interaction_kwargs)
 
