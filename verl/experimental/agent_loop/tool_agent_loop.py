@@ -259,7 +259,7 @@ class ToolAgentLoop(AgentLoopBase):
         _, agent_data.tool_calls = await self.tool_parser.extract_tool_calls(agent_data.response_ids)
 
         # Handle interaction if needed
-        if self.interaction_config_file:
+        if self.interaction_config_file and agent_data.interaction is not None:
             assistant_message = await self.loop.run_in_executor(
                 None, lambda: self.tokenizer.decode(agent_data.response_ids, skip_special_tokens=True)
             )
